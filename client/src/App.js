@@ -15,22 +15,26 @@ export default function App() {
   const emailRegex = /\S+@\S+\.\S+/;
 
   const emailInput = (event) => {
-      const email = event.target.value;
-      setEmail(event.target.value)
-      if (emailRegex.test(email)) {
-        console.log("correct")
-        setValidateEmail(true)
-      } else {
-        console.log("incorrect")
-        setValidateEmail(false)
-      }
+    const email = event.target.value;
+    setEmail(event.target.value)
+    if (emailRegex.test(email)) {
+      setValidateEmail(true)
+    } else {
+      setValidateEmail(false)
+    }
   }
 
   return (
     <form className="form" onSubmit={null}>
-      <input className="form__input" placeholder="First name" required/>
-      <input className="form__input" placeholder="Last name" required/>
-      <input id="email" className={`${validateEmail ? 'form__input' : 'form__input--invalid' }`} placeholder="Email" value={email} onChange={emailInput} required/>
+      <input className="form__input" placeholder="First name" required />
+      <input className="form__input" placeholder="Last name" required />
+      <input id="email"
+        className={`${validateEmail ? 'form__input' : 'form__input--invalid'}`}
+        placeholder="Email"
+        value={email}
+        onChange={emailInput}
+        required
+      />
       <div className="form__datePicker">
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <Stack spacing={3}>
