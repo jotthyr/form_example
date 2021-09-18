@@ -13,9 +13,13 @@ export default function App() {
   const [lastName, setLastName] = useState("");
   const [validateEmail, setValidateEmail] = useState(true);
   const [email, setEmail] = useState("");
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState(new Date().getMonth() + '/' + new Date().getDate() + '/' + new Date().getFullYear());
 
   const emailRegex = /\S+@\S+\.\S+/;
+
+  const dateRegex = /^((0?[1-9]|1[012])[- /.](0?[1-9]|[12][0-9]|3[01])[- /.](19|20)?[0-9]{2})*$/;
+
+  const nameRegex = /^[a-z ,.'-]+$/i;
 
   const emailInput = (event) => {
     const email = event.target.value;
@@ -30,8 +34,10 @@ export default function App() {
   const handleSubmit = (event) => {
     event.preventDefault()
     if (date) {
-      console.log(date, validateEmail, /^((0?[1-9]|1[012])[- /.](0?[1-9]|[12][0-9]|3[01])[- /.](19|20)?[0-9]{2})*$/.test(date.getMonth() + '/' + date.getDate() + '/' + date.getFullYear()), /^[a-z ,.'-]+$/i.test(firstName), /^[a-z ,.'-]+$/i.test(lastName))
-      if (date && validateEmail && /^((0?[1-9]|1[012])[- /.](0?[1-9]|[12][0-9]|3[01])[- /.](19|20)?[0-9]{2})*$/.test(date.getMonth() + '/' + date.getDate() + '/' + date.getFullYear()) && /^[a-z ,.'-]+$/i.test(firstName) && /^[a-z ,.'-]+$/i.test(lastName)) {
+
+
+      console.log(date, validateEmail, dateRegex.test(date), nameRegex.test(firstName), nameRegex.test(lastName))
+      if (date && validateEmail && dateRegex.test(date) && nameRegex.test(firstName) && nameRegex.test(lastName)) {
         axios.post('/api/form', {
           "firstName": lastName,
           "lastName": firstName,
@@ -82,7 +88,10 @@ export default function App() {
               value={date}
               minDate={new Date('2017-01-01')}
               onChange={(newValue) => {
-                setDate(newValue);
+                if(newValue){
+                let convertedDate = newValue.getMonth() + '/' + newValue.getDate() + '/' + newValue.getFullYear()
+                setDate(convertedDate);
+                }
               }}
               renderInput={(params) => <TextField {...params} />}
             />
@@ -93,7 +102,7 @@ export default function App() {
         className="form__input--submit"
         type="submit"
         value="Submit" />
-      <p>{date && /^((0?[1-9]|1[012])[- /.](0?[1-9]|[12][0-9]|3[01])[- /.](19|20)?[0-9]{2})*$/.test(date.getMonth() + '/' + date.getDate() + '/' + date.getFullYear()) && /^[a-z ,.'-]+$/i.test(firstName) && validateEmail && typeof firstName === 'string' && typeof lastName === 'string' ? null : "Wrong data!"}</p>
+      <p>{date && validateEmail && dateRegex.test(date) && nameRegex.test(firstName) && nameRegex.test(lastName) ? null : "Wrong data!"}</p>
     </form>
   );
 }
