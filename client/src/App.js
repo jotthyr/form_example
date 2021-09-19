@@ -5,7 +5,7 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DesktopDatePicker from '@mui/lab/DesktopDatePicker';
 import Stack from '@mui/material/Stack';
-import axios from 'axios';
+import eventPost from "./eventPost"
 
 export default function App() {
 
@@ -31,25 +31,15 @@ export default function App() {
     }
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
     if (date) {
       if (date && validateEmail && dateRegex.test(date) && nameRegex.test(firstName) && nameRegex.test(lastName)) {
-        axios.post('http://127.0.0.1:4000/api/form/', {
-          "firstName": lastName,
-          "lastName": firstName,
-          "email": email,
-          "date": date
-        }).then((response) => {
-            setDate("");
-            setEmail("");
-            setFirstName("");
-            setLastName("");
-            console.log(response);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+        await eventPost(firstName,lastName,email,date)
+        setDate("");
+        setEmail("");
+        setFirstName("");
+        setLastName("");
       }
     }
   }
@@ -95,6 +85,7 @@ export default function App() {
         </LocalizationProvider>
       </div>
       <input
+        data-testid="submit-btn"
         className="form__input--submit"
         type="submit"
         value="Submit" />

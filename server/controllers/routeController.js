@@ -14,3 +14,21 @@ exports.postForm = async (req, res) => {
     res.json({ message: err });
   }
 };
+
+exports.testForm= async (req, res) => {
+  try {
+    const event = await Form.find();
+    res.json(event);
+  } catch (err) {
+    res.json({ message: err });
+  }
+};
+
+exports.singleTestForm = async (req, res) => {
+  try {
+    const event = await Form.findById(req.params.eventId);
+    res.json(event);
+  } catch (err) {
+    res.json({ message: err });
+  }
+};
