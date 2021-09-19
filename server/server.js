@@ -10,14 +10,11 @@ const app = express();
 
 const PORT = 4000;
 
+app.use(cors({origin: "*"}))
+
 dotenv.config();
 
 app.use(bodyParser.json())
-
-app.use(cors({
-  origin: 'http://localhost:3000',
-  credentials: true,
-}));
 
 app.use('/api', route);
 
