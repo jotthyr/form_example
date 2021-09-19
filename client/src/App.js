@@ -34,17 +34,13 @@ export default function App() {
   const handleSubmit = (event) => {
     event.preventDefault()
     if (date) {
-
-
-      console.log(date, validateEmail, dateRegex.test(date), nameRegex.test(firstName), nameRegex.test(lastName))
       if (date && validateEmail && dateRegex.test(date) && nameRegex.test(firstName) && nameRegex.test(lastName)) {
-        axios.post('/api/form', {
+        axios.post('http://127.0.0.1:4000/api/form/', {
           "firstName": lastName,
           "lastName": firstName,
           "email": email,
-          "date": date,
-        })
-          .then((response) => {
+          "date": date
+        }).then((response) => {
             setDate("");
             setEmail("");
             setFirstName("");
@@ -88,9 +84,9 @@ export default function App() {
               value={date}
               minDate={new Date('2017-01-01')}
               onChange={(newValue) => {
-                if(newValue){
-                let convertedDate = newValue.getMonth() + '/' + newValue.getDate() + '/' + newValue.getFullYear()
-                setDate(convertedDate);
+                if (newValue) {
+                  let convertedDate = newValue.getMonth() + '/' + newValue.getDate() + '/' + newValue.getFullYear()
+                  setDate(convertedDate);
                 }
               }}
               renderInput={(params) => <TextField {...params} />}
@@ -102,7 +98,7 @@ export default function App() {
         className="form__input--submit"
         type="submit"
         value="Submit" />
-      <p>{date && validateEmail && dateRegex.test(date) && nameRegex.test(firstName) && nameRegex.test(lastName) ? null : "Wrong data!"}</p>
+      <p>{date && validateEmail && dateRegex.test(date) && nameRegex.test(firstName) && nameRegex.test(lastName) ? null : (lastName === "" || firstName === "" ? null : "Wrong data!")}</p>
     </form>
   );
 }
